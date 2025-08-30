@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, XCircle, ArrowRight } from 'lucide-react';
+import { CheckCircle, XCircle, ArrowRight, ArrowLeft } from 'lucide-react';
 import { Question, QuestionOption } from '@/data/questions';
 
 interface QuizCardProps {
@@ -14,6 +14,7 @@ interface QuizCardProps {
   currentOptionNumber: number;
   onAnswer: (isCorrect: boolean) => void;
   onNext: () => void;
+  onBack: () => void;
 }
 
 export const QuizCard = ({ 
@@ -24,7 +25,8 @@ export const QuizCard = ({
   totalOptions,
   currentOptionNumber,
   onAnswer, 
-  onNext 
+  onNext,
+  onBack
 }: QuizCardProps) => {
   const [userAnswer, setUserAnswer] = useState<boolean | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
@@ -51,9 +53,20 @@ export const QuizCard = ({
     <Card className="w-full max-w-4xl mx-auto shadow-xl border-0 bg-gradient-to-br from-white to-secondary/20">
       <CardHeader className="space-y-4">
         <div className="flex items-center justify-between">
-          <Badge variant="outline" className="text-sm font-medium">
-            Statement {currentOptionNumber} of {totalOptions}
-          </Badge>
+          <div className="flex items-center gap-3">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={onBack}
+              className="text-muted-foreground hover:text-foreground"
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Exit Quiz
+            </Button>
+            <Badge variant="outline" className="text-sm font-medium">
+              Statement {currentOptionNumber} of {totalOptions}
+            </Badge>
+          </div>
           <div className="h-2 w-32 bg-secondary rounded-full overflow-hidden">
             <div 
               className="h-full bg-gradient-to-r from-primary to-primary-glow transition-all duration-500"

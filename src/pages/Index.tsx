@@ -52,6 +52,14 @@ const Index = () => {
     setQuizCompleted(false);
   };
 
+  const handleBack = () => {
+    setQuizStarted(false);
+    setCurrentQuestionIndex(0);
+    setCurrentOptionIndex(0);
+    setScore(0);
+    setTotalAnswered(0);
+  };
+
   const startQuiz = () => {
     setQuizStarted(true);
   };
@@ -84,6 +92,7 @@ const Index = () => {
             currentOptionNumber={totalAnswered + 1}
             onAnswer={handleAnswer}
             onNext={handleNext}
+            onBack={handleBack}
           />
         </div>
       </div>
