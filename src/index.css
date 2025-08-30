@@ -8,6 +8,19 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
+    /* Quiz theme colors */
+    --primary: 240 100% 60%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 240 100% 70%;
+    
+    --secondary: 270 100% 97%;
+    --secondary-foreground: 240 100% 60%;
+    
+    --success: 120 60% 50%;
+    --success-foreground: 0 0% 100%;
+    --error: 0 70% 55%;
+    --error-foreground: 0 0% 100%;
+    
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
