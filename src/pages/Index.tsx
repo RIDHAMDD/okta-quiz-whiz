@@ -8,30 +8,46 @@ import { questions } from '@/data/questions';
 
 const Index = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [currentOptionIndex, setCurrentOptionIndex] = useState(0);
   const [score, setScore] = useState(0);
-  const [correctAnswers, setCorrectAnswers] = useState(0);
+  const [totalAnswered, setTotalAnswered] = useState(0);
   const [quizStarted, setQuizStarted] = useState(false);
   const [quizCompleted, setQuizCompleted] = useState(false);
+
+  // Calculate total number of individual options across all questions
+  const totalOptions = questions.reduce((total, question) => total + question.options.length, 0);
+
+  const getCurrentOption = () => {
+    return questions[currentQuestionIndex]?.options[currentOptionIndex];
+  };
 
   const handleAnswer = (isCorrect: boolean) => {
     if (isCorrect) {
       setScore(score + 1);
-      setCorrectAnswers(correctAnswers + 1);
     }
+    setTotalAnswered(totalAnswered + 1);
   };
 
   const handleNext = () => {
-    if (currentQuestionIndex + 1 < questions.length) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    // Move to next option
+    if (currentOptionIndex + 1 < questions[currentQuestionIndex].options.length) {
+      setCurrentOptionIndex(currentOptionIndex + 1);
     } else {
-      setQuizCompleted(true);
+      // Move to next question, reset option index
+      if (currentQuestionIndex + 1 < questions.length) {
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+        setCurrentOptionIndex(0);
+      } else {
+        setQuizCompleted(true);
+      }
     }
   };
 
   const handleRestart = () => {
     setCurrentQuestionIndex(0);
+    setCurrentOptionIndex(0);
     setScore(0);
-    setCorrectAnswers(0);
+    setTotalAnswered(0);
     setQuizStarted(false);
     setQuizCompleted(false);
   };
@@ -46,8 +62,8 @@ const Index = () => {
         <div className="container mx-auto">
           <QuizResults
             score={score}
-            totalQuestions={questions.length}
-            correctAnswers={correctAnswers}
+            totalQuestions={totalOptions}
+            correctAnswers={score}
             onRestart={handleRestart}
           />
         </div>
@@ -62,7 +78,10 @@ const Index = () => {
           <QuizCard
             question={questions[currentQuestionIndex]}
             currentQuestionIndex={currentQuestionIndex}
+            currentOptionIndex={currentOptionIndex}
             totalQuestions={questions.length}
+            totalOptions={totalOptions}
+            currentOptionNumber={totalAnswered + 1}
             onAnswer={handleAnswer}
             onNext={handleNext}
           />
@@ -80,8 +99,8 @@ const Index = () => {
               DOMC Exam Prep
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Master your Okta Implementation skills with 35 comprehensive practice questions. 
-              Get instant feedback and track your progress.
+              Master your Okta Implementation skills with individual practice statements. 
+              Answer each statement Yes/No and get instant feedback and explanations.
             </p>
           </div>
           
