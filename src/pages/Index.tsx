@@ -4,9 +4,10 @@ import { Button } from '@/components/ui/button';
 import { BookOpen, Brain, Target, Award } from 'lucide-react';
 import { QuizCard } from '@/components/QuizCard';
 import { QuizResults } from '@/components/QuizResults';
-import { questions } from '@/data/questions';
+import { questions as originalQuestions } from '@/data/questions';
 
 const Index = () => {
+  const [questions, setQuestions] = useState(originalQuestions);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [currentOptionIndex, setCurrentOptionIndex] = useState(0);
   const [score, setScore] = useState(0);
@@ -60,7 +61,19 @@ const Index = () => {
     setTotalAnswered(0);
   };
 
+  const shuffleArray = (array: any[]) => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
+
   const startQuiz = () => {
+    // Shuffle questions when starting the quiz
+    const shuffledQuestions = shuffleArray(originalQuestions);
+    setQuestions(shuffledQuestions);
     setQuizStarted(true);
   };
 
